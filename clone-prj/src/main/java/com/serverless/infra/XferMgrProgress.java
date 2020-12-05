@@ -1,4 +1,4 @@
-package com.serverless;
+package com.serverless.infra;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;

@@ -18,9 +18,9 @@ class CreateHandler : RequestHandler<Map<String,Any>, ApiGatewayResponse> {
 
     override fun handleRequest(input: Map<String,Any>, context: Context): ApiGatewayResponse {
         LOG.debug("Received ProjectInfo :  ${input["body"]}")
-        val body = input.get("body") as String
+//        val body = input.get("body") as String
 
-        val projectInfo = Gson().fromJson<ProjectInfo>(body, ProjectInfo::class.java)
+        val projectInfo = Gson().fromJson<ProjectInfo>(input.toString(), ProjectInfo::class.java)
 
         val repository = ProjectInfoRepository.getInstance()
         val savedProjectInfo = repository!!.save(projectInfo)
