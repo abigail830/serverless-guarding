@@ -9,6 +9,7 @@ import com.amazonaws.services.s3.transfer.MultipleFileUpload;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.serverless.XferMgrProgress;
+import com.serverless.model.S3Info;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,9 +21,9 @@ import java.util.Map;
 public class S3Helper {
 
     private static final Logger LOG = LogManager.getLogger(S3Helper.class);
-    private static final String BUCKET_NAME = "clone-prj";
+    private static final String BUCKET_NAME = "clone-prj-to-s3";
 
-    public Map<String, Object> uploadDirToS3(String sourcePath, String prjName) throws AmazonServiceException {
+    public S3Info uploadDirToS3(String sourcePath, String prjName) throws AmazonServiceException {
         long timestamp = System.currentTimeMillis();
         String key_prefix = prjName + "/" + timestamp;
         LOG.info("Going to upload {} to S3 bucket {}/{}", sourcePath, BUCKET_NAME, key_prefix);
@@ -38,11 +39,7 @@ public class S3Helper {
 
         xfer_mgr.shutdownNow();
 
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("bucketName", BUCKET_NAME);
-        result.put("projectName", prjName);
-        result.put("timestamp", timestamp);
-        return result;
+        return new S3Info(BUCKET_NAME, prjName, key_prefix);
     }
 
     public void putFileToS3(Map<String, Object> s3Info, File completeIndicator) {

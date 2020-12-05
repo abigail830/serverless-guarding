@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.serverless</groupId>
-    <artifactId>clone-prj</artifactId>
+    <artifactId>clone-prj-to-s3</artifactId>
     <packaging>jar</packaging>
     <version>dev</version>
-    <name>clone-prj</name>
+    <name>clone-prj-to-s3</name>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -15,6 +15,12 @@
     </properties>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.6</version>
+        </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-lambda-java-log4j2</artifactId>

@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: clone-prj
+service: clone-prj-to-s3
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -24,6 +24,7 @@ provider:
   name: aws
   runtime: java8
   profile: serverless-admin
+  role: arn:aws:iam::008135705340:role/lambda-to-s3
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
@@ -50,10 +51,10 @@ provider:
 
 # you can add packaging information here
 package:
-  artifact: target/clone-prj-dev.jar
+  artifact: target/clone-prj-to-s3-dev.jar
 
 functions:
-  clone:
+  clonePrj:
     handler: com.serverless.Handler
     timeout: 600
 #    The following are a few example events you can configure
@@ -97,12 +98,12 @@ functions:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: clone-prj
+resources:
+  Resources:
+    NewResource:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: clone-prj-to-s3
 #  Outputs:
 #     NewOutput:
 #       Description: "Description for the output"
