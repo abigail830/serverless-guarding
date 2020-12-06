@@ -97,6 +97,21 @@ functions:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
+resources:
+  Resources:
+    ProjectInfoDynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: project-info-with-s3
+        AttributeDefinitions:
+          - AttributeName: projectId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: projectId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
 #resources:
 #  Resources:
 #    NewResource:
