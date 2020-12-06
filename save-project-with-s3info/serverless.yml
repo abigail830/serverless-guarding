@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: tag-file
+service: save-project-with-s3info
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -24,7 +24,7 @@ provider:
   name: aws
   runtime: java8
   profile: serverless-admin
-  role: arn:aws:iam::008135705340:role/lambda_to_kinesis
+  role: arn:aws:iam::008135705340:role/lambda_to_db
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
@@ -51,10 +51,10 @@ provider:
 
 # you can add packaging information here
 package:
-  artifact: target/hello-dev.jar
+  artifact: target/save-prj-with-s3info-dev.jar
 
 functions:
-  tagFile:
+  save:
     handler: com.serverless.Handler
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
