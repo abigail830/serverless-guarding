@@ -18,7 +18,7 @@ import java.util.Map;
 public class S3Helper {
 
     private static final Logger LOG = LogManager.getLogger(S3Helper.class);
-    private static final String BUCKET_NAME = "clone-prj-to-s3";
+    private static final String BUCKET_NAME = "raw-clone-bucket";
 
     public S3Info uploadDirToS3(String sourcePath, String prjName) throws AmazonServiceException {
         long timestamp = System.currentTimeMillis();

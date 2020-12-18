@@ -1,0 +1,38 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws: s3",
+      "awsRegion": "us-east-1",
+      "eventTime": "2020-12-13T08: 10: 58.280Z",
+      "eventName": "ObjectCreated: Put",
+      "userIdentity": {
+        "principalId": "AWS: AROAQDZHNAL6AVVCIEOWN: clone-prj-to-s3-dev-clonePrj"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "18.206.187.129"
+      },
+      "responseElements": {
+        "x-amz-request-id": "06300A9A59F87C35",
+        "x-amz-id-2": "+RkafKWb1YzyuGLFUy1Sw6mHFmFeOEWOAXtiwOx3+7oPFDqG2zpntTLaFTSj6WVCGaSZbDEX97qIq27lj5HymCo7qr08Zda8"
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "PutObjectEvent",
+        "bucket": {
+          "name": "raw-clone-bucket",
+          "ownerIdentity": {
+            "principalId": "AUYHYYWGNX8JB"
+          },
+          "arn": "arn: aws: s3::: raw-clone-bucket"
+        },
+        "object": {
+          "key": "parkinglot/1607847061547/.git/FETCH_HEAD",
+          "size": 119,
+          "eTag": "913d8e114f983704c96cde2f9883b03b",
+          "sequencer": "005FD5CC99702C640D"
+        }
+      }
+    }
+  ]
+}

@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: clone-prj-to-s3
+service: java-basic-parser
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -51,10 +51,10 @@ provider:
 
 # you can add packaging information here
 package:
-  artifact: target/clone-prj-to-s3-dev.jar
+  artifact: target/java-basic-parser-dev.jar
 
 functions:
-  clonePrj:
+  parse:
     handler: com.serverless.Handler
     timeout: 600
 #    The following are a few example events you can configure
@@ -65,9 +65,7 @@ functions:
 #          path: users/create
 #          method: get
 #      - websocket: $connect
-#      - s3:
-#          bucket: clone-prj-to-s3
-#          event: s3:ObjectCreated:*
+#      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic
 #      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
@@ -105,7 +103,7 @@ functions:
 #    NewResource:
 #      Type: AWS::S3::Bucket
 #      Properties:
-#        BucketName: clone-project-to-s3
+#        BucketName: my-new-bucket
 #  Outputs:
 #     NewOutput:
 #       Description: "Description for the output"
