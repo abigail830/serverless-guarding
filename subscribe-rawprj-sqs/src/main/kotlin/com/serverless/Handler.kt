@@ -19,6 +19,7 @@ class Handler : RequestHandler<SQSEvent, String> {
     companion object {
         private val LOG = LogManager.getLogger(Handler::class.java)
         var gson = GsonBuilder().setPrettyPrinting().create()
+        val ignorePaths = listOf<String>(".git")
     }
 
     override fun handleRequest(sqsEvent: SQSEvent, context: Context): String? {
@@ -35,7 +36,11 @@ class Handler : RequestHandler<SQSEvent, String> {
                     LOG.info("Going to read S3 Ojbect: $srcBucket | $srcKey")
 
                     val s3Info = S3Info(srcBucket, srcKey)
-                    invokeJavaParser(s3Info)
+                    if (!ignorePaths.contains(srcKey)) {
+                        invokeJavaParser(s3Info)
+                    } else {
+                        LOG.info("$srcKey to be ignore")
+                    }
 
                 } catch (e: Exception) {
                     LOG.error("Exception when extract S3 Info: ${e.message}")
@@ -47,7 +52,7 @@ class Handler : RequestHandler<SQSEvent, String> {
 
     }
 
-    fun invokeJavaParser(payload: S3Info): String?{
+    private fun invokeJavaParser(payload: S3Info): String? {
         LOG.info("Going to trigger JavaBasicParser for $payload")
         val functionName = "arn:aws:lambda:us-east-1:008135705340:function:java-basic-parser-dev-parse"
         val payload = gson.toJson(payload)

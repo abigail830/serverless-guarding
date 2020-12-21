@@ -18,13 +18,17 @@ class Handler:RequestHandler<Map<String, Object>, String> {
         LOG.info("received: $input")
 
         val s3Info = S3Info(input)
-        val s3Client: AmazonS3 = AmazonS3ClientBuilder.defaultClient()
-        val s3Object: S3Object = s3Client.getObject(GetObjectRequest(
-                s3Info.srcBucket, s3Info.srcBucket))
-        val objectData: InputStream = s3Object.objectContent
-//
-//        //parse
-        LOG.info(objectData)
+
+        if(s3Info.srcFileKey.endsWith(".java")){
+            val s3Client: AmazonS3 = AmazonS3ClientBuilder.defaultClient()
+            val s3Object: S3Object = s3Client.getObject(GetObjectRequest(
+                    s3Info.srcBucket, s3Info.srcFileKey))
+            val objectData: InputStream = s3Object.objectContent
+            LOG.info(objectData)
+        }else{
+            LOG.info("Ignore non java files: $s3Info")
+        }
+
 
         return "200 OK"
     }
