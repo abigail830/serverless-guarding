@@ -1,0 +1,64 @@
+{
+  "Comment": "Clone project",
+  "StartAt": "Clone Project To S3",
+  "States": {
+    "Clone Project To S3": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:us-east-1:008135705340:function:clone-prj-to-s3-dev-clonePrj",
+        "Payload": {
+          "repoUrl.$": "$.repoUrl",
+          "userName.$": "$.userName",
+          "password.$": "$.password",
+          "branch.$": "$.branch"
+        }
+      },
+      "Next": "PrjPostProcess",
+      "TimeoutSeconds": 600
+    },
+    "PrjPostProcess": {
+      "Type": "Parallel",
+      "End": true,
+      "Branches": [
+        {
+          "StartAt": "Save ProjectInfo To DB",
+          "States": {
+            "Save ProjectInfo To DB": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "InputPath": "$.Payload",
+              "Parameters": {
+                "FunctionName": "arn:aws:lambda:us-east-1:008135705340:function:save-project-with-s3info-dev-save:$LATEST",
+                "Payload": {
+                  "input.$": "$"
+                }
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "Send message to SNS",
+          "States": {
+            "Send message to SNS": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::sns:publish",
+              "Parameters": {
+                "Message": {
+                  "Input": "Raw Project uploaded to S3"
+                },
+                "TopicArn": "arn:aws:sns:us-east-1:008135705340:RawPrjFileToS3"
+              },
+              "End": true
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+
