@@ -47,7 +47,7 @@ provider:
 
   # you can define service wide environment variables here
   environment:
-    bucketName: clone-project-bucket-v1
+    bucketName: clone-bucket-008135705340
 
 # you can add packaging information here
 package:

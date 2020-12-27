@@ -1,0 +1,140 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Resources": {
+    "Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Fn::Sub": "clone-bucket-${AWS::AccountId}"
+        },
+        "NotificationConfiguration": {
+          "TopicConfigurations": [
+            {
+              "Event": "s3:ObjectCreated:*",
+              "Topic": {
+                "Ref": "S3ObjectChangeEvent"
+              }
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "BucketToSNSPermission"
+      ],
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "e454b324-207b-474b-ae47-7c75689f2503"
+        }
+      }
+    },
+    "S3ObjectChangeEvent": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "TopicName": {
+          "Fn::Sub": "S3ObjectChanged-Topic-${AWS::AccountId}"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "880fc26f-57a0-4342-a9ff-9f05ebc20df7"
+        }
+      }
+    },
+    "BucketToSNSPermission": {
+      "Type": "AWS::SNS::TopicPolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "s3.amazonaws.com"
+              },
+              "Action": "sns:Publish",
+              "Resource": {
+                "Ref": "S3ObjectChangeEvent"
+              },
+              "Condition": {
+                "ArnEquals": {
+                  "aws:SourceArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:s3:::clone-bucket-${AWS::AccountId}"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "Topics": [
+          {
+            "Ref": "S3ObjectChangeEvent"
+          }
+        ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "09c55fa5-b45e-4eb8-bd8b-0f96dae49fd9"
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "AWS::CloudFormation::Designer": {
+      "880fc26f-57a0-4342-a9ff-9f05ebc20df7": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 60,
+          "y": 90
+        },
+        "z": 1,
+        "embeds": []
+      },
+      "09c55fa5-b45e-4eb8-bd8b-0f96dae49fd9": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 180,
+          "y": 90
+        },
+        "z": 1,
+        "embeds": [],
+        "isassociatedwith": [
+          "880fc26f-57a0-4342-a9ff-9f05ebc20df7"
+        ]
+      },
+      "2639a975-de05-4654-87e2-ede45cc796d1": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 60,
+          "y": 210
+        },
+        "z": 1,
+        "embeds": []
+      },
+      "e454b324-207b-474b-ae47-7c75689f2503": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 180,
+          "y": 210
+        },
+        "z": 1,
+        "embeds": [],
+        "dependson": [
+          "09c55fa5-b45e-4eb8-bd8b-0f96dae49fd9"
+        ]
+      }
+    }
+  }
+}
